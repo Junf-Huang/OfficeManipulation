@@ -16,6 +16,8 @@ public class OfficeMainpulation {
         excel.createRows(value1, 2);
         excel.createOneRow(value2);
         excel.save();
+
+        excel.readSheet(sheetName);
     }
 
 

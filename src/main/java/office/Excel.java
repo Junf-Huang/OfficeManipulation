@@ -1,5 +1,6 @@
 package office;
 
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -122,9 +123,46 @@ public class Excel {
 
     //read excel
 
-    public void read() throws Exception{
+    //read all sheet
+    public void readSheets() throws Exception{
         HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(xlsx));
         HSSFSheet sheet = null;
+
+        for (int i = 0; i < workbook.getNumberOfSheets(); i++) {// 获取每个Sheet表
+            sheet = workbook.getSheetAt(i);
+            for (int j = 0; j < sheet.getLastRowNum() + 1; j++) {// getLastRowNum，获取最后一行的行标
+                Row row = sheet.getRow(j);
+                readRow(row);
+                System.out.println(""); // 读完一行后换行
+            }
+            System.out.println("读取sheet表：" + workbook.getSheetName(i) + " 完成");
+        }
+
+    }
+
+    public void readSheet(String sheetName) throws Exception{
+        HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(xlsx));
+        HSSFSheet sheet = null;
+        sheet = workbook.getSheet(sheetName);
+        for (int j = 0; j < sheet.getLastRowNum() + 1; j++) {// getLastRowNum
+            // 获取最后一行的行标
+            HSSFRow row = sheet.getRow(j);
+            readRow(row);
+            System.out.println("");
+        }
+    }
+
+    public void readRow(Row row) {
+        if (row != null) {
+            for (int k = 0; k < row.getLastCellNum(); k++) {// getLastCellNum
+                // 是获取最后一个不为空的列是第几个
+                if (row.getCell(k) != null) { // getCell 获取单元格数据
+                    System.out.print(row.getCell(k) + " ");
+                } else {
+                    System.out.print("\t");
+                }
+            }
+        }
     }
 
 }
